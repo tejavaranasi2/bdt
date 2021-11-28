@@ -9,6 +9,7 @@ from django.core.files.storage import FileSystemStorage
 from datetime import datetime
 import pytz
 import random
+from .drive import uploadFile
 
 utc=pytz.UTC
 
@@ -131,7 +132,7 @@ def todo(request):
         if(Work.objects.all().count() != 0):
             for w in c.work_set.all():
                 if(w.deadline):
-                    if(w.deadline > utc.localize(datetime.now()) ):
+                    if(w.deadline < utc.localize(datetime.now()) ):
                         continue
                 found = False
                 for a in w.assignment_set.all():
@@ -506,7 +507,7 @@ def update(request,*args,**kwargs):
 
 
 def submit(request, item, wrk):
-    if (request.method == 'POST'):
+    if (request.method == 'POST'): 
         print('yes')
         form = AssignmentForm(request.POST, request.FILES)
         if form.is_valid():
@@ -519,6 +520,7 @@ def submit(request, item, wrk):
                     ass.save()
                     submit_notif(request.user.username,request.user.email,wrk,w.crs.name)
                     status = False
+                    uploadFile(str(ass.path) + str(w.name)) # Swayam
                     return render(request, 'show.html',{'assign':ass, 'status':status})
         else:
             form = AssignmentForm()
@@ -538,7 +540,7 @@ def submit(request, item, wrk):
         form = AssignmentForm()
         dead = False
         if(work_obj.deadline):
-            dead = work_obj.deadline > utc.localize(datetime.now()) 
+            dead = work_obj.deadline < utc.localize(datetime.now()) 
         return render(request, 'submit.html', {'form':form, 'work':work_obj, 'dead_bool':dead})
 
 def feedback(request, item, wrk, asn):

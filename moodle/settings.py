@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'moodle.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'moodle_db',
-        'USER': 'stv',
-        'PASSWORD': 'teja',
+        'NAME': 'floatmoodle',
+        'USER': 'swayam',
+        'PASSWORD': 'iusearchbtw',
         'HOST': 'localhost',
     }
 }

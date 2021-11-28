@@ -6,6 +6,9 @@ from django.forms import fields
 from django.forms.widgets import DateTimeInput
 from .models import Work,Assignment,Person
 
+class DateInput(forms.DateInput):
+    input_type='date'
+
 class RegistrationForm(UserCreationForm):
     first_name = forms.CharField(max_length=100, required=True, help_text='Required', widget=forms.TextInput())
     email = forms.CharField(max_length=100, required=True, help_text='Required', widget=forms.TextInput())
@@ -18,7 +21,7 @@ class WorkForm(forms.Form):
  #   owner = forms.CharField(max_length=100, required=True, help_text='Required', widget=forms.TextInput())
     name = forms.CharField(max_length=100, required=True, help_text='Required', widget=forms.TextInput())
     total_marks = forms.IntegerField(required=True, help_text='Required', widget=forms.TextInput())
-    deadline = forms.DateTimeField(required=True, help_text='2021-01-11 08:10:20', error_messages={'required':'Can\'t be empty','invalid':'Wrong Format'}, widget=forms.DateTimeInput())
+    deadline = forms.DateTimeField(required=True, help_text='2021-01-11 08:10:20', error_messages={'required':'Can\'t be empty','invalid':'Wrong Format'}, widget=DateInput())
 
 
 class CreateForm(forms.Form):
